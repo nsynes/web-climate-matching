@@ -1,0 +1,35 @@
+.leaflet-container {
+    max-height: 80vh;
+}
+.select-location {
+    cursor: crosshair;
+}
+.no-results {
+    position: absolute;
+    text-align: center;
+    bottom: 0;
+    left: 0;
+    color: red;
+    background-color: rgb(255,255,255,0.6);
+    z-index: 1000;
+    width: 100%;
+    font-size: 18px;
+}
+button {
+    font-size: 20px;
+    border-radius: 8px;
+}
+button:disabled,
+button[disabled]{
+    color: #d7d7d7;
+    background-color: #f6f6f6f6;
+}
+p {
+    font-size: 20px;
+}
+.title {
+    font-weight: bold;
+}
+.paragraph {
+    text-align: left;
+}
