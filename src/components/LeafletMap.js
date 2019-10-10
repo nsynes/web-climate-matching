@@ -16,6 +16,7 @@ class Map extends React.Component {
           maxValue: null,
           loading: false,
           noResults: false,
+          nValues: 0,
         };
     }
 
@@ -32,7 +33,8 @@ class Map extends React.Component {
         this.setState({
             currentPos: null,
             apiResponse: '',
-            noResults: false
+            noResults: false,
+            nValues: 0,
         });
     }
 
@@ -53,10 +55,12 @@ class Map extends React.Component {
         .then(res => {
             if ( res ) {
                 let resObj = JSON.parse(res);
-                let maxValue = Math.max.apply(Math, resObj.features.map(function(o) { return o.properties.cd; }))
+                let maxValue = Math.max.apply(Math, resObj.features.map(function(o) { return o.properties.cd; }));
+                let nValues = resObj.features.length;
                 this.setState({
                     apiResponse: resObj,
                     maxValue: maxValue,
+                    nValues: nValues,
                     loading: false
                  })
             } else {
@@ -64,6 +68,7 @@ class Map extends React.Component {
                     apiResponse: '',
                     maxValue: null,
                     loading: false,
+                    nValues: 0,
                     noResults: true
                  })
             }
@@ -78,6 +83,12 @@ class Map extends React.Component {
         const b = 0
         const h = r * 0x10000 + g * 0x100 + b * 0x1;
         return '#' + ('000000' + h.toString(16)).slice(-6);
+    }
+
+    onEachFeature = (feature, layer) => {
+        if (feature.properties && feature.properties.cd && feature.properties.rank) {
+            layer.bindPopup(`<b>Rank</b>: ${feature.properties.rank} of ${this.state.nValues}<br /><b>CD</b>: ${feature.properties.cd}`);
+        }
     }
 
 
@@ -132,7 +143,8 @@ class Map extends React.Component {
                     { this.state.apiResponse && <GeoJSON
                         key={'geojson01'}
                         data={this.state.apiResponse}
-                        pointToLayer={setStyle.bind(this)}>
+                        pointToLayer={setStyle.bind(this)}
+                        onEachFeature={this.onEachFeature}>
                     </GeoJSON> }
                 </LeafletMap>
                 <div style={{display: 'flex', justifyContent: 'center'}}>
