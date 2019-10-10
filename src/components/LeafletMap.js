@@ -87,8 +87,8 @@ class Map extends React.Component {
             let colour = this.perc2color(feature.properties.cd);
             let geojsonMarkerOptions = {
                 fillColor: colour,
-                color: "#fff",
-                weight: 0,
+                color: colour,
+                weight: 1,
                 opacity: 1,
                 fillOpacity: 0.8
             };
